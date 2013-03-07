@@ -1,0 +1,27 @@
+extends layout-absolute
+block main
+  google-map(center="center", zoom="zoom", markers="markers", links="links", newmarker="newmarker", gps="gps", path="path")
+
+  div(modal="shouldBeOpen", close="close()")
+    div.modal-header
+      h4 I'm a modal!
+    div.modal-body
+      with some content...
+    div.modal-footer
+      button.btn.btn-warning.cancel(ng-click="close()") Cancel
+
+  div(ng-show="gps", style="position: absolute; top: 5em; left: 3em; z-index: 100;")
+    div.alert.alert-block(style="border: 1px solid #c09853;")
+      h3(style="margin: 0.1em; padding: 0em;") GPS utility
+      ul
+        li Click on the initial supernode
+        li(ng-show="path.length") Click on the final supernode
+
+  div(ng-show="newmarker", style="position: absolute; top: 5em; left: 3em; z-index: 100; width: 300px;")
+    div.alert.alert-block(style="overflow: hidden;")
+      button.close(type="button", data-dismiss="alert") &times;
+      h4 Add supernode
+      p Drag the marker to the position where the supernode must reside. Click on the save button below to accept the changes.
+      p.pull-right(ng-show="newmarker.latitude")
+          button.btn.btn-primary(ng-click="postMarker();") Save
+      

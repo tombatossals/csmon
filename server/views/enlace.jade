@@ -1,0 +1,52 @@
+extends layout
+block main
+  div(style="margin: 3em auto; width: 995px;", ng-show="enlace")
+    h2(style="border-bottom: 2px solid #888; margin-bottom: .2em;", ng-bind="title") Enlace
+    if (locals.user)
+      div.pull-right
+        button.btn.btn-danger(ng-click="openModal()") Remove link
+
+    div.row(style="clear: both;", ng-show="enlace")
+      div.span6
+        table.table.table-striped
+          thead
+            tr
+              th Supernodos
+          tbody
+            tr
+              td
+                strong
+                  a(ng-href="/supernodo/#/{{ s1.name }}") {{ s1.name }}
+              td
+                strong {{ s1.mainip }}
+            tr
+              td
+                strong
+                  a(ng-href="/supernodo/#/{{ s2.name }}") {{ s2.name }}
+              td
+                strong {{ s2.mainip }}
+      div.span4.pull-right
+        google-map(center="center", markers="markers", links="links")
+
+    div.row
+      div.span5
+        h3 Daily graph
+        img(ng-src="{{ graph_image_url }}")
+      div.span5
+        h3 Weekly graph
+        img(ng-src="{{ graph_image_url_weekly }}")
+    div.row
+      div.span5
+        h3 Monthly graph
+        img(ng-src="{{ graph_image_url_monthly }}")
+      div.span5
+        h3 Year graph
+        img(ng-src="{{ graph_image_url_year }}")
+
+  div(modal="shouldBeOpen", close="close()")
+    div.modal-header
+      h4 Remove link
+    div.modal-body Are you sure you want to to this?
+    div.modal-footer
+      button.btn.btn-danger.cancel(ng-click="removeLink()") Yes, do it
+      button.btn(ng-click="close()") Cancel
