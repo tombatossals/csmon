@@ -10,6 +10,7 @@
     "string"   :  "latest",
     "nodemon"  :  "latest",
     "grunt-cli"  :  "latest",
+    "optimist"  :  "latest",
     "underscore" :  "latest",
     "jayson" :  "latest",
     "mongoose-findorcreate" :  "latest",

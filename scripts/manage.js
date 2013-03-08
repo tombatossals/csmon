@@ -16,4 +16,4 @@ function check_parameters(argv) {
     return true;
 }
 
-require(util.format("./common/%s_%s", argv._[0], argv._[1]));
+require(util.format("../common/%s_%s", argv._[0], argv._[1]));

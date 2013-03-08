@@ -2,7 +2,7 @@
 
 var logger = require("./log"),
     mongoose = require('mongoose'),
-    Supernodo = require("../models/supernodo");
+    Supernodo = require("./models/supernodo");
 
 var conn = 'mongodb://localhost/troncales';
 var db = mongoose.connect(conn);

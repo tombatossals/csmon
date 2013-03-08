@@ -9,11 +9,11 @@ var logger    = require("./log"),
     mongoose  = require('mongoose'),
     time      = require('time'),
     Netmask   = require('netmask').Netmask,
-    Enlace    = require("../models/enlace").Enlace,
+    Enlace    = require("./models/enlace").Enlace,
     util      = require("util"),
     sshConn   = require("ssh2"),
     readline  = require("readline"),
-    Supernodo = require("../models/supernodo");
+    Supernodo = require("./models/supernodo");
 
 var working = new Array();
 

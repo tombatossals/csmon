@@ -3,10 +3,10 @@
 var logger    = require("./log"),
     mongoose  = require('mongoose'),
     Netmask   = require('netmask').Netmask,
-    Enlace    = require("../models/enlace").Enlace,
+    Enlace    = require("./models/enlace").Enlace,
     util      = require("util");
     ObjectId  = mongoose.Schema.Types.ObjectId;
-    Supernodo = require("../models/supernodo");
+    Supernodo = require("./models/supernodo");
 
 var conn = 'mongodb://localhost/troncales';
 var db = mongoose.connect(conn);
