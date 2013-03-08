@@ -1,6 +1,6 @@
 extends layout
 block main
-  div.row(style="margin: 3em auto; width: 800px;", ng-show="supernodo")
+  div.row(style="margin: 3em auto; width: 995px;", ng-show="supernodo")
     h2(style="border-bottom: 2px solid #888; margin-bottom: .2em;", ng-bind="title") Supernodo
     if (locals.user)
       div.pull-right(style="margin-bottom: 1em;")
@@ -11,7 +11,7 @@ block main
       div.span4.pull-right
         google-map(center="center", markers="markers", links="links")
 
-      div.span4
+      div.span5
         form.form-horizontal(ng-submit="saveSupernodo()")
           table.table.table-striped(ng-show="supernodo")
             tbody
@@ -53,6 +53,21 @@ block main
                 a(ng-href="/enlace/#/{{ supernodo.name }}/{{ s.name }}") {{ supernodo.name }} - {{ s.name }}
             td
               strong {{ s.mainip }}
+
+    div.row(ng-show="supernodo.omnitik")
+      div.span5
+        h3 Daily graph
+        img(ng-src="{{ graph_image_url }}")
+      div.span5
+        h3 Weekly graph
+        img(ng-src="{{ graph_image_url_weekly }}")
+    div.row(ng-show="supernodo.omnitik")
+      div.span5
+        h3 Monthly graph
+        img(ng-src="{{ graph_image_url_monthly }}")
+      div.span5
+        h3 Year graph
+        img(ng-src="{{ graph_image_url_year }}")
 
   div(modal="isOpenAddEnlace", close="closeAddEnlace()")
     div.modal-header

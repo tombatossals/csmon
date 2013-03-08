@@ -51,6 +51,53 @@ module.exports = function(app, urls) {
         } });
     });
 
+    app.get(urls.graphUsers, function(req, res) {
+
+        var supernodo = req.params.supernodo;
+        var interval = req.query.interval;
+
+        Supernodo.find({ "name": supernodo }, function(err, s) {
+            var a = "/var/lib/collectd/" + supernodo + "/node/connected_users.rrd";
+console.log(supernodo);
+            if (!fs.existsSync(a)) {
+                res.send(404);
+                return;
+            }
+
+            var start = -86400;
+            var step = 1200; 
+            if (interval == "weekly") {
+                start = -604800;
+                step = 3600*2;
+            } else if (interval == "monthly") {
+                start = -18144000;
+                step = 3600*24;
+            } else if (interval == "year") {
+                start = -31536000;
+                step = 3600*24*7;
+            }
+
+            var command = '/usr/bin/rrdtool graph - --imgformat=PNG ' +
+                          '--start=' + start + ' --end=now ' +
+                          '--title="' + supernodo + ' - Connected users" ' +
+                          '--step=' + step + ' --base=1000 --height=140 --width=480 ' +
+                          '--alt-autoscale-max --lower-limit="0" ' +
+                          '--vertical-label="bits per second" --font TITLE:10: ' +
+                          '--font AXIS:7: --font LEGEND:8: --font UNIT:7: ' +
+                          'DEF:a="' + a + '":"users":AVERAGE:step=1200 ' +
+                          'AREA:a#4444FFFF:"Connected users"  ' +
+                          'LINE:a#000000FF GPRINT:a:LAST:"Last%8.2lf %s" ' +
+                          'GPRINT:a:AVERAGE:"Avg%8.2lf %s"  ' +
+                          'GPRINT:a:MAX:"Max%8.2lf %s" GPRINT:a:MIN:"Min%8.2lf %s\\n"';
+
+console.log(command);
+            exec(command, { encoding: 'binary', maxBuffer: 5000*1024 }, function(error, stdout, stderr) {   
+                res.type('png');
+                res.send(new Buffer(stdout, 'binary'));
+            });
+        });
+    });
+
     app.get(urls.graph, function(req, res) {
 
         var o = req.params.s1;

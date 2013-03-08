@@ -5,7 +5,7 @@ var argv = require("optimist").usage("Usage: $0 [generate collectd|monitor links
 
 
 function check_parameters(argv) {
-    var sections = [ [ "generate", "monitor", "update" ], [ "collectd", "interfaces", "links" ] ];
+    var sections = [ [ "generate", "monitor", "update" ], [ "collectd", "interfaces", "links", "users" ] ];
     for (var i=0; i<argv._.length; i++) { 
         var section = sections[i];
         var argument = argv._[i];

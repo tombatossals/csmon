@@ -73,6 +73,11 @@ function SupernodoController($scope, $location, $http) {
             $scope.title = "Supernodo " + response.name + " (" + response.mainip + ")";
             $scope.hash = response.name;
 
+            $scope.graph_image_url = "/graph/users/" + response.name;
+            $scope.graph_image_url_weekly = $scope.graph_image_url + "?interval=weekly";
+            $scope.graph_image_url_monthly = $scope.graph_image_url + "?interval=monthly";
+            $scope.graph_image_url_year = $scope.graph_image_url + "?interval=year";
+
             $http.get("/api/supernodo/" + response._id + "/neighbours").success(function(response) {
                 $scope.supernodos = response.supernodos;
             });

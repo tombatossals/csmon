@@ -29,6 +29,9 @@ var SupernodoSchema = new Schema({
     password: {
         type: String
     },
+    omnitik: {
+        type: Boolean
+    },
     validated: {
         type: Boolean
     },

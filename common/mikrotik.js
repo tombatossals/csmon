@@ -2,6 +2,29 @@ var api = require('mikronode'),
     logger = require('./log'),
     util = require('util');
 
+function getConnectedUsers(ip, username, password, callback) {
+
+    var connection = new api(ip, username, password);
+    connection.on('error', function(err) {
+        logger.error(err, ip);
+        logger.error(util.format("FATAL: Can't connect to the API: %s %s %s", ip, username, password));
+        callback();
+    });
+
+    connection.connect(function(conn) {
+        var chan=conn.openChannel();
+        chan.write('/interface/wireless/registration-table/print',function() {
+            chan.on('done',function(data) {
+                var parsed = api.parseItems(data);
+                var connectedUsers = parsed.length;
+                callback(connectedUsers);
+                chan.close();
+                conn.close();
+            });
+        });
+    });
+}
+
 function getips(ip, username, password, callback) {
 
     var connection = new api(ip, username, password);
@@ -67,3 +90,4 @@ function traceroute(ip, username, password, remoteip, callback) {
 
 module.exports.traceroute = traceroute;
 module.exports.getips = getips;
+module.exports.getConnectedUsers = getConnectedUsers;

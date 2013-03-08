@@ -70,7 +70,7 @@ module.exports = function(app, urls) {
                 delete supernodo["username"];
                 delete supernodo["password"];
                 var s = new Object();
-                var fields = [ "_id", "mainip", "name", "system", "latlng" ];
+                var fields = [ "_id", "mainip", "name", "system", "latlng", "omnitik" ];
                 for (var i in fields) {
                     var f = fields[i];
                     s[f] = supernodo[f];

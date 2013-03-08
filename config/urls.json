@@ -17,6 +17,7 @@
         "user": "api/user"
     },
     "graph": "graph/:s1/:s2",
+    "graphUsers": "graph/users/:supernodo",
     "enlace": "enlace",
     "supernodo": "supernodo"
 }
