@@ -11,6 +11,12 @@ var EnlaceSchema = new Schema({
     saturation: {
         type: String
     },
+    network: {
+        type: String
+    },
+    active: {
+        type: Boolean
+    },
     supernodos: [{
         id: {
             type: String

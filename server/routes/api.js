@@ -1,11 +1,11 @@
 "use strict";
 
-var Supernodo = require('../models/supernodo'),
-    Enlace    = require('../models/enlace'),
-    User      = require('../models/user'),
-    mikrotik_traceroute = require('../common/mikrotik').traceroute,
-    openwrt_traceroute = require('../common/openwrt').traceroute,
-    ensureAuthenticated = require('../common/google_auth').ensureAuthenticated;
+var Supernodo = require('../../common/models/supernodo'),
+    Enlace    = require('../../common/models/enlace'),
+    User      = require('../../common/models/user'),
+    mikrotik_traceroute = require('../../common/mikrotik').traceroute,
+    openwrt_traceroute = require('../../common/openwrt').traceroute,
+    ensureAuthenticated = require('../../common/google_auth').ensureAuthenticated;
 
 module.exports = function(app, urls) {
 

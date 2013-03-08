@@ -29,6 +29,9 @@ var SupernodoSchema = new Schema({
     password: {
         type: String
     },
+    validated: {
+        type: Boolean
+    },
     system: {
         type: String
     }

@@ -2,13 +2,13 @@
 "use strict";
 
 var express = require('express'),
-    settings = require('./config/settings'),
+    settings = require('../config/settings'),
     mongoose = require('mongoose'),
-    urls_constructor = require('./common/urls_constructor'),
-    generate_mongo_url = require('./common/generate_mongo_url'),
+    urls_constructor = require('../common/urls_constructor'),
+    generate_mongo_url = require('../common/generate_mongo_url'),
     passport = require('passport'),
-    google_auth = require('./common/google_auth'),
-    relative_urls = require('./config/urls');
+    google_auth = require('../common/google_auth'),
+    relative_urls = require('../config/urls');
 
 var SessionMongoose = require('session-mongoose')(express),
     app = express();

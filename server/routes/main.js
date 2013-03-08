@@ -2,10 +2,10 @@
 
 var exec = require('child_process').exec,
     util = require("util"),
-    Supernodo = require("../models/supernodo"),
-    Enlace = require("../models/enlace"),
+    Supernodo = require("../../common/models/supernodo"),
+    Enlace = require("../../common/models/enlace"),
     fs = require("fs"),
-    ensureAuthenticated = require('../common/google_auth').ensureAuthenticated;
+    ensureAuthenticated = require('../../common/google_auth').ensureAuthenticated;
 
 module.exports = function(app, urls) {
 

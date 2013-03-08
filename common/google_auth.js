@@ -4,7 +4,7 @@ var passport = require('passport'),
     settings = require('../config/settings'),
     relative_urls = require('../config/urls'),
     urls_constructor = require('./urls_constructor'),
-    User = require('../models/user'),
+    User = require('./models/user'),
     GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 
 var urls = urls_constructor(settings.base_url, relative_urls);
