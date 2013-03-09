@@ -27,4 +27,4 @@ var EnlaceSchema = new Schema({
     }],
 });
 
-module.exports.Enlace = mongoose.model('enlaces', EnlaceSchema);
+module.exports = mongoose.model('enlaces', EnlaceSchema);

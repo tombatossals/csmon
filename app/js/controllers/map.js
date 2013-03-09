@@ -11,12 +11,12 @@ function MapController($scope, $location, $http) {
             data: function(term, page) {
                 return {
                     q: term
-                }
+                };
             },
             results: function(data) {
                 return {
                     results: data
-                }
+                };
             }
         }
     });
@@ -34,7 +34,7 @@ function MapController($scope, $location, $http) {
 	links: [],
         path: [],
 	zoom: 13,
-        gps: true,
+        gps: false,
         newmarker: false
     });
 
@@ -73,14 +73,13 @@ function MapController($scope, $location, $http) {
         if ($scope.links.length > 0) {
             for (var e in $scope.links) {
                 var enlace = $scope.links[e];
-                var distance = parseInt(enlace.distance)/1000;
+                var distance = parseInt(enlace.distance, 10)/1000;
                 $http.put("/api/enlace/" + enlace._id, { distance: distance });
             }
         }
     };
 
     $scope.toggleGps = function() {
-        $scope.gps = !$scope.gps;
         $scope.newmarker = false;
 
         if (!$scope.gps) {
@@ -98,7 +97,7 @@ function MapController($scope, $location, $http) {
     $scope.$watch("path", function(newValue, oldValue) {
         var path = newValue;
         $scope.links = [];
-        if (path.length == 2) {
+        if (path.length === 2) {
             $http.get("/api/path/" + path[0].name + "/" + path[1].name).success(function(response) {
                 $scope.links = response;
             });

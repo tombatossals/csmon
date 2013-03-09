@@ -26,9 +26,9 @@ if (!INTERVAL) {
 }
 
 function monitor_users(supernodo, countdown_and_exit) {
-    getConnectedUsers(supernodo.mainip, supernodo.username, supernodo.password, function(value) {
-        console.log(util.format("PUTVAL \"%s/node/connected_users\" interval=%s N:%s", supernodo.name, INTERVAL, value));
-        logger.debug(util.format("PUTVAL \"%s/node/connected_users\" interval=%s N:%s", supernodo.name, INTERVAL, value));
+    getConnectedUsers(supernodo.mainip, supernodo.username, supernodo.password, function(users) {
+        console.log(util.format("PUTVAL \"%s/node/connected_users\" interval=%s N:%s:%s", supernodo.name, INTERVAL, users.good, users.bad));
+        logger.debug(util.format("PUTVAL \"%s/node/connected_users\" interval=%s N:%s:%s", supernodo.name, INTERVAL, users.good, users.bad));
         countdown_and_exit(supernodo.id);
     });
 }
@@ -61,4 +61,3 @@ Supernodo.find(query).exec(function(err, supernodos) {
         monitor_users(supernodo, countdown_and_exit);
     });
 });
-

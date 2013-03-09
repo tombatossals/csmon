@@ -8,7 +8,9 @@ function EnlaceController($scope, $location, $http) {
     $scope.$watch("location.path()", function() {
         if ($location.path()) {
             var supernodos = $location.path().replace("/", "").split("/");
-            if (supernodos.length != 2) return;
+            if (supernodos.length !== 2) {
+                return;
+            }
             var s1 = supernodos[0];
             var s2 = supernodos[1];
             goto(s1, s2);
@@ -22,12 +24,12 @@ function EnlaceController($scope, $location, $http) {
             data: function(term, page) {
                 return {
                     q: term
-                }
+                };
             },
             results: function(data) {
                 return {
                     results: data
-                }
+                };
             }
         }
     });
@@ -71,7 +73,7 @@ function EnlaceController($scope, $location, $http) {
         $http.put("/api/user/", { phone: $scope.phone }).success(function(response) {
             $scope.messageOk = true;
         });
-    }
+    };
 
     $scope.removeLink = function(s1, s2) {
         $http.delete("/api/enlace/" + $scope.enlace._id).success(function(response) {
@@ -80,7 +82,6 @@ function EnlaceController($scope, $location, $http) {
     };
 
     $scope.openModal = function() {
-        console.log("hoal");
         $scope.shouldBeOpen = true;
     };
 

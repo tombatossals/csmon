@@ -8,7 +8,7 @@ process.on('error', function(err) {
 var logger    = require("./log"),
     mongoose  = require('mongoose'),
     Netmask   = require('netmask').Netmask,
-    Enlace    = require("./models/enlace").Enlace,
+    Enlace    = require("./models/enlace"),
     util      = require("util"),
     sshConn   = require("ssh2"),
     readline  = require("readline"),

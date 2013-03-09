@@ -15,9 +15,18 @@ function getConnectedUsers(ip, username, password, callback) {
         var chan=conn.openChannel();
         chan.write('/interface/wireless/registration-table/print',function() {
             chan.on('done',function(data) {
+                var users = { good: 0, bad: 0 };
                 var parsed = api.parseItems(data);
-                var connectedUsers = parsed.length;
-                callback(connectedUsers);
+                for (var i in parsed) {
+                    var item = parsed[i];
+                    var signal = item["signal-strength"].replace(/dBm.*/, "");
+                    if (signal <= -80) {
+                        users.bad += 1;
+                    } else {
+                        users.good += 1;
+                    }
+                }
+                callback(users);
                 chan.close();
                 conn.close();
             });

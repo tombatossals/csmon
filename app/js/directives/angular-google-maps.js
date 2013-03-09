@@ -401,7 +401,7 @@
                                poly.tooltip = $('<div />').qtip({
                                    content: '<a href="/enlace/#/' + s1.name + '/' + s2.name + '"><img src="' + "/graph/" + s1.name + "/" + s2.name + '" /></a>',
                                    style: {
-                                       classes: 'ui-tooltip-bootstrap ui-tooltip-shadow graph'
+                                       classes: 'qtip-bootstrap qtip-shadow graph'
                                    },
                                    position: {
                                        at: "right center",
@@ -469,7 +469,7 @@
                                 }
                             },
                             style: {
-                                classes: 'ui-tooltip-bootstrap ui-tooltip-shadow'
+                                classes: 'qtip-bootstrap qtip-shadow'
                             },
                             position: {
                                 at: "right center",

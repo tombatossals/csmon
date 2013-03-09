@@ -15,5 +15,5 @@ function UserController($scope, $location, $http) {
         $http.put("/api/user/", { phone: $scope.phone }).success(function(response) {
             $scope.messageOk = true;
         });
-    }
+    };
 }

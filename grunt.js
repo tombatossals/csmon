@@ -73,7 +73,7 @@ module.exports = function( grunt ) {
     lint: {
       files: [
         'Gruntfile.js',
-        'app/scripts/**/*.js',
+        'app/js/*/*.js',
         'spec/**/*.js'
       ]
     },
@@ -82,6 +82,7 @@ module.exports = function( grunt ) {
     // https://github.com/cowboy/grunt/blob/master/docs/task_lint.md#specifying-jshint-options-and-globals
     jshint: {
       options: {
+        es5: true,
         curly: true,
         eqeqeq: true,
         immed: true,
@@ -95,7 +96,8 @@ module.exports = function( grunt ) {
         browser: true
       },
       globals: {
-        angular: true
+        angular: true,
+        "$": true
       }
     },
 

@@ -18,12 +18,12 @@ function SupernodoController($scope, $location, $http) {
             data: function(term, page) {
                 return {
                     q: term
-                }
+                };
             },
             results: function(data) {
                 return {
                     results: data
-                }
+                };
             }
         }
     });
@@ -39,12 +39,12 @@ function SupernodoController($scope, $location, $http) {
             data: function(term, page) {
                 return {
                     q: term
-                }
+                };
             },
             results: function(data) {
                 return {
                     results: data
-                }
+                };
             }
         }
     });
@@ -73,10 +73,12 @@ function SupernodoController($scope, $location, $http) {
             $scope.title = "Supernodo " + response.name + " (" + response.mainip + ")";
             $scope.hash = response.name;
 
-            $scope.graph_image_url = "/graph/users/" + response.name;
-            $scope.graph_image_url_weekly = $scope.graph_image_url + "?interval=weekly";
-            $scope.graph_image_url_monthly = $scope.graph_image_url + "?interval=monthly";
-            $scope.graph_image_url_year = $scope.graph_image_url + "?interval=year";
+            if (response.omnitik) {
+                $scope.graph_image_url = "/graph/users/" + response.name;
+                $scope.graph_image_url_weekly = $scope.graph_image_url + "?interval=weekly";
+                $scope.graph_image_url_monthly = $scope.graph_image_url + "?interval=monthly";
+                $scope.graph_image_url_year = $scope.graph_image_url + "?interval=year";
+            }
 
             $http.get("/api/supernodo/" + response._id + "/neighbours").success(function(response) {
                 $scope.supernodos = response.supernodos;
@@ -89,7 +91,7 @@ function SupernodoController($scope, $location, $http) {
         $http.put("/api/user/", { phone: $scope.phone }).success(function(response) {
             $scope.messageOk = true;
         });
-    }
+    };
 
     $scope.removeSupernodo = function(s1, s2) {
         $http.delete("/api/supernodo/" + $scope.supernodo._id).success(function(response) {
@@ -122,7 +124,7 @@ function SupernodoController($scope, $location, $http) {
         $http.put("/api/supernodo/" + $scope.supernodo._id, { name: $scope.supernodo.name, mainip: $scope.supernodo.mainip }).success(function(response) {
             $scope.messageOk = true;
         });
-    }
+    };
 
     $scope.addEnlace = function() {
         var s2 = $scope.newlink;

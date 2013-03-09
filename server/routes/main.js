@@ -58,7 +58,6 @@ module.exports = function(app, urls) {
 
         Supernodo.find({ "name": supernodo }, function(err, s) {
             var a = "/var/lib/collectd/" + supernodo + "/node/connected_users.rrd";
-console.log(supernodo);
             if (!fs.existsSync(a)) {
                 res.send(404);
                 return;
@@ -84,13 +83,18 @@ console.log(supernodo);
                           '--alt-autoscale-max --lower-limit="0" ' +
                           '--vertical-label="bits per second" --font TITLE:10: ' +
                           '--font AXIS:7: --font LEGEND:8: --font UNIT:7: ' +
-                          'DEF:a="' + a + '":"users":AVERAGE:step=1200 ' +
-                          'AREA:a#4444FFFF:"Connected users"  ' +
-                          'LINE:a#000000FF GPRINT:a:LAST:"Last%8.2lf %s" ' +
-                          'GPRINT:a:AVERAGE:"Avg%8.2lf %s"  ' +
-                          'GPRINT:a:MAX:"Max%8.2lf %s" GPRINT:a:MIN:"Min%8.2lf %s\\n"';
+                          'DEF:a="' + a + '":"good":MAX:step=1200 ' +
+                          'DEF:b="' + a + '":"bad":MAX:step=1200 ' +
+                          'AREA:b#EA644A:"Connected users (bad signal)": ' +
+                          'LINE:b#CC3118 ' + 
+                          'GPRINT:b:LAST:"Last %.0lf" ' +
+                          'GPRINT:b:MAX:"Max %.0lf" ' +
+                          'GPRINT:b:MIN:"Min %.0lf\\n" ' +
+                          'AREA:a#54EC48:"Connected users (good signal)":STACK  ' +
+                          'GPRINT:a:LAST:"Last %.0lf" ' +
+                          'GPRINT:a:MAX:"Max %.0lf" ' +
+                          'GPRINT:a:MIN:"Min %.0lf\\n"';
 
-console.log(command);
             exec(command, { encoding: 'binary', maxBuffer: 5000*1024 }, function(error, stdout, stderr) {   
                 res.type('png');
                 res.send(new Buffer(stdout, 'binary'));
