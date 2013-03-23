@@ -6,7 +6,6 @@ function getConnectedUsers(ip, username, password, callback) {
 
     var connection = new api(ip, username, password);
     connection.on('error', function(err) {
-        logger.error(err, ip);
         logger.error(util.format("FATAL: Can't connect to the API: %s %s %s", ip, username, password));
         callback();
     });
@@ -70,7 +69,7 @@ function traceroute(ip, username, password, remoteip, callback) {
 
     var connection = new api(ip, username, password);
     connection.on('error', function(err) {
-        console.log(err);
+        console.log("ERROR", err);
         callback();
     });
 

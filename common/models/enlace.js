@@ -11,6 +11,9 @@ var EnlaceSchema = new Schema({
     saturation: {
         type: String
     },
+    bandwidth: {
+        type: String
+    },
     network: {
         type: String
     },

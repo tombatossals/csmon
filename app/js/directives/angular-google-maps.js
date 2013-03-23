@@ -386,6 +386,11 @@
                            };
                        })(enlace, poly));
 
+                       google.maps.event.addListener(poly, "mouseout", function() {
+                           poly.tooltip = undefined;
+                           $("#tooltip").qtip("destroy");
+                       });
+
                        google.maps.event.addListener(poly, "mouseover", (function(enlace, poly) {
                            return function(event) {
                                poly.setOptions({
@@ -398,7 +403,7 @@
                                var pixel = scope.map.projection.fromLatLngToContainerPixel(event.latLng);
             	               var pos = [pixel.x, pixel.y];
 
-                               poly.tooltip = $('<div />').qtip({
+                               poly.tooltip = $("#tooltip").qtip({
                                    content: '<a href="/enlace/#/' + s1.name + '/' + s2.name + '"><img src="' + "/graph/" + s1.name + "/" + s2.name + '" /></a>',
                                    style: {
                                        classes: 'qtip-bootstrap qtip-shadow graph'
@@ -413,7 +418,7 @@
                                        target: pos
                                    },
                                    show: {
-                                       delay: 1,
+                                       delay: 0,
                                        ready: true,
                                        event: false,
                                        solo: true
@@ -422,9 +427,9 @@
                                        fixed: true,
                                        delay: 50,
                                        event: 'mouseleave unfocus',
-                                       inactive: 2000
-                                   }
-                               }).qtip('api');
+                                       inactive: 5000
+                                    }
+                               }).qtip("api");
                            };
                        })(enlace, poly));
 
@@ -457,14 +462,19 @@
                 var supernodo = v;
                 var marker = _m.addMarker(v);
                 if (scope.zoom) {
+                   google.maps.event.addListener(marker, "mouseout", function() {
+                       marker.tooltip = undefined;
+                       $("#tooltip").qtip("destroy");
+                   });
+
                     google.maps.event.addListener(marker, 'mouseover', function(event) {
                         var pixel = scope.map.projection.fromLatLngToContainerPixel(event.latLng);
                         var pos = [pixel.x, pixel.y];
-                        marker.tooltip = $('<div />').qtip({
+                        marker.tooltip = $("#tooltip").qtip({
                             content: {
                                 text: supernodo.mainip,
                                 title: {
-                                    text: supernodo.name,
+                                    text: "<strong>" + supernodo.name + "</strong>",
                                     button: true
                                 }
                             },

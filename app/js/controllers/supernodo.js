@@ -10,47 +10,15 @@ function SupernodoController($scope, $location, $http) {
             goto($location.path().replace("/", ""));
         }
     });
- 
-    $(".search").select2({
-        placeholder: "Supernodos",
-        ajax: {
-            url: "/api/supernodos/search",
-            data: function(term, page) {
-                return {
-                    q: term
-                };
-            },
-            results: function(data) {
-                return {
-                    results: data
-                };
-            }
+
+    $http.get("/api/supernodos/search").success(function(response) {
+        $scope.searchItems = response;
+    });
+
+    $scope.$watch("goto", function(nv, ov) {
+        if (nv) {
+            window.location = "/supernodo/#/" + nv;
         }
-    });
-
-    $(".search").on("change", function(data) {
-        window.location = "/supernodo/#/" + $(this).val();
-    });
-
-    $(".newlink").select2({
-        placeholder: "Supernodos",
-        ajax: {
-            url: "/api/supernodos/search",
-            data: function(term, page) {
-                return {
-                    q: term
-                };
-            },
-            results: function(data) {
-                return {
-                    results: data
-                };
-            }
-        }
-    });
-
-    $(".newlink").on("change", function(data) {
-        $scope.newlink = $(this).val();
     });
 
     angular.extend($scope, {
@@ -62,7 +30,8 @@ function SupernodoController($scope, $location, $http) {
         markers: [],
         links: [],
         showLinks: false,
-        newmarker: false
+        newmarker: false,
+        goto: false
     });
 
     function goto(supernodo) {

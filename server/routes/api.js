@@ -2,6 +2,7 @@
 
 var Supernodo = require('../../common/models/supernodo'),
     Enlace    = require('../../common/models/enlace'),
+    findByIp  = require('../../common/common').findByIp,
     User      = require('../../common/models/user'),
     mikrotik_traceroute = require('../../common/mikrotik').traceroute,
     openwrt_traceroute = require('../../common/openwrt').traceroute,
@@ -53,8 +54,9 @@ module.exports = function(app, urls) {
             var s2 = supernodos[1];
             var enlace = new Enlace();
             enlace.supernodos = [ { id: s1._id.toString() }, { id: s2._id.toString() } ];
-            enlace.save();
-            res.send(200);
+            enlace.save(function() {
+                res.send(200);
+            });
         });
     });
 
@@ -175,24 +177,6 @@ module.exports = function(app, urls) {
         });
     });
 
-    function findByIp(ip, supernodos) {
-        var supernodo = null;
-        for (var i=0; i<supernodos.length; i++) {
-            var s = supernodos[i];
-            for (var j=0; j<s.interfaces.length; j++) {
-                var iface = s.interfaces[j];
-                var ifaceip= iface.address.split("/")[0];
-                if (ip === ifaceip) {
-                    var supernodo = s;
-                    break;
-                }
-            }
-            if (supernodo) break;
-        }
-        if (!supernodo) { console.log(ip) }
-        return supernodo;
-    }
-
     app.get(urls.api.path, function(req, res) {
         var s1 = req.params.s1;
         var s2 = req.params.s2;
@@ -285,8 +269,9 @@ module.exports = function(app, urls) {
     app.delete(urls.api.enlaceById, ensureAuthenticated, function(req, res) {
         var id = req.params.id;
         Enlace.findOne({ _id: id }, function(err, enlace) {
-            enlace.remove();
-            res.send(200);
+            enlace.remove(function() {
+                res.send(200);
+            });
         });
     });
 

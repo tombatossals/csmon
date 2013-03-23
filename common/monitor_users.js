@@ -27,8 +27,12 @@ if (!INTERVAL) {
 
 function monitor_users(supernodo, countdown_and_exit) {
     getConnectedUsers(supernodo.mainip, supernodo.username, supernodo.password, function(users) {
-        console.log(util.format("PUTVAL \"%s/node/connected_users\" interval=%s N:%s:%s", supernodo.name, INTERVAL, users.good, users.bad));
-        logger.debug(util.format("PUTVAL \"%s/node/connected_users\" interval=%s N:%s:%s", supernodo.name, INTERVAL, users.good, users.bad));
+        if (users && users.hasOwnProperty("good")) {
+            console.log(util.format("PUTVAL \"%s/node/connected_users\" interval=%s N:%s:%s", supernodo.name, INTERVAL, users.good, users.bad));
+            logger.debug(util.format("PUTVAL \"%s/node/connected_users\" interval=%s N:%s:%s", supernodo.name, INTERVAL, users.good, users.bad));
+        } else {
+            logger.error(util.format("Can't read wireless connected users on %s", supernodo.name));
+        }
         countdown_and_exit(supernodo.id);
     });
 }

@@ -17,25 +17,14 @@ function EnlaceController($scope, $location, $http) {
         }
     });
 
-    $(".search").select2({
-        placeholder: "Supernodos",
-        ajax: {
-            url: "/api/supernodos/search",
-            data: function(term, page) {
-                return {
-                    q: term
-                };
-            },
-            results: function(data) {
-                return {
-                    results: data
-                };
-            }
-        }
+    $http.get("/api/supernodos/search").success(function(response) {
+        $scope.searchItems = response;
     });
 
-    $(".search").on("change", function(data) {
-        window.location = "/supernodo/#/" + $(this).val();
+    $scope.$watch("goto", function(nv, ov) {
+        if (nv) {
+            window.location = "/supernodo/#/" + nv;
+        }
     });
 
     angular.extend($scope, {

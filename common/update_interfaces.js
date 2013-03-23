@@ -31,8 +31,12 @@ Supernodo.count(function(err, count) {
                 var getips = undefined; 
                 if (supernodo.system === "mikrotik") {
                     getips = getips_mikrotik;
-                } else { 
+                } else if (supernodo.system === "openwrt") { 
                     getips = getips_openwrt;
+                } else {
+                    logger.error("Supernode not recognized: " + supernodo.name);
+                    end();
+                    return;
                 }
 
                 var password = supernodo.password;

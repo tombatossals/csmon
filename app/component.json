@@ -3,10 +3,11 @@
   "version": "1.0.0",
   "main": "./app/styles/main.css",
   "dependencies": {
-      "jquery": "1.9",
       "angular": "latest",
       "bootstrap": "latest",
       "angular-bootstrap": "latest",
-      "select2": "latest"
+      "angular-ui": "latest",
+      "select2": "latest",
+      "jquery": "latest"
     }
 }

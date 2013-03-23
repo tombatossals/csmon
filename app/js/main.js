@@ -20,8 +20,8 @@
 // load all of the dependencies asynchronously.
 $script('/components/jquery/jquery.min.js', function() {
     $script([ '/components/angular/angular.min.js', '/components/select2/select2.min.js' ],function() {
-        $script([ '/components/qtip/jquery.qtip.min.js', '/components/angular-bootstrap/src/dropdownToggle/dropdownToggle.js', '/components/angular-bootstrap/src/buttons/buttons.js', '/components/angular-bootstrap/src/transition/transition.js', '/components/angular-bootstrap/src/dialog/dialog.js', '/components/angular-bootstrap/src/modal/modal.js', '/js/directives/angular-google-maps.js', '/js/controllers/map.js', '/js/controllers/user.js', '/js/controllers/enlace.js', '/js/controllers/supernodo.js' ], function() {
-	    angular.module('mainApp', ['google-maps', 'ui.bootstrap.buttons', 'ui.bootstrap.dropdownToggle', 'ui.bootstrap.modal']);
+        $script([ '/components/angular-ui/build/angular-ui.min.js', '/components/qtip/jquery.qtip.min.js', '/components/angular-bootstrap/src/dropdownToggle/dropdownToggle.js', '/components/angular-bootstrap/src/buttons/buttons.js', '/components/angular-bootstrap/src/transition/transition.js', '/components/angular-bootstrap/src/dialog/dialog.js', '/components/angular-bootstrap/src/modal/modal.js', '/js/directives/angular-google-maps.js', '/js/controllers/map.js', '/js/controllers/user.js', '/js/controllers/enlace.js', '/js/controllers/supernodo.js' ], function() {
+	    angular.module('mainApp', ['google-maps', 'ui.bootstrap.buttons', 'ui.bootstrap.dropdownToggle', 'ui.bootstrap.modal', 'ui']);
             angular.bootstrap(document, ['mainApp']);
         });
     });

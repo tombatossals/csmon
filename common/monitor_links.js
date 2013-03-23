@@ -123,7 +123,7 @@ function bandwidth_test_mikrotik(enlace, s1, s2, cb) {
     if (testip) {
         c.on("ready", function() {
             c.exec(util.format(":global ip; :global username; :global password; :global interval; :global duration; :set ip %s; :set username %s; :set password %s; :set interval %s; :set duration %s; /system script run bandwidth", testip, username2, password2, interval, duration), function(err, stream) {
-                logger.debug(util.format("Executing on %s: :global ip; :set ip %s; /system script run bandwidth", ip, testip));
+                logger.debug(util.format(":global ip; :global username; :global password; :global interval; :global duration; :set ip %s; :set username %s; :set password %s; :set interval %s; :set duration %s; /system script run bandwidth", testip, username2, password2, interval, duration));
                 if (err) { 
                         logger.debug(util.format("Error on bandwidth from %s to %s.", ip, testip));
 		        cb(enlace.id);

@@ -18,6 +18,7 @@
     "mikronode"   :  "latest",
     "netmask"   :  "latest",
     "winston"   :  "latest",
+    "winston-mongodb"   :  "latest",
     "ssh2"   :  "latest",
     "passport-google-oauth"   :  "latest",
     "session-mongoose"   :  "latest",

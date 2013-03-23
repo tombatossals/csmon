@@ -74,7 +74,10 @@ block main
       h4 Add a new link to this supernode
     div.modal-body(style="height: 6em;")
         p Select the supernode to link to
-        input.bigdrop.newlink.span2(type="hidden")
+        select(ui-select2="", ng-model="newlink", data-placeholder="Select a supernode", style="width: 180px; margin: 0;")
+          option(value="")
+          option(ng-repeat="supernodo in searchItems", value="{{supernodo.id}}") {{supernodo.text}}
+
     div.modal-footer
       button.btn.btn-success.cancel(ng-click="addEnlace()") Add
       button.btn(ng-click="closeAddEnlace()") Cancel

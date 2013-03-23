@@ -28,8 +28,10 @@ html
                     li
                       a(href=urls.logout) Logout
               else
-                a.btn.btn-warning(ng-href=urls.login + "?return={{ hash }}") Login
-              div.pull-right(style="margin: .4em .5em .4em 0;")
-                input.bigdrop.search.span2(type="hidden")
+                a.btn.btn-warning(ng-href=urls.login + "/?return={{ hash }}") Login
+              div.pull-right(style="margin: .4em 0 .4em .5em;")
+                select(ui-select2="", ng-model="goto", data-placeholder="Select a supernode", style="width: 180px; margin: 0;")
+                  option(value="")
+                  option(ng-repeat="supernodo in searchItems", value="{{supernodo.id}}") {{supernodo.text}}
 
       block main

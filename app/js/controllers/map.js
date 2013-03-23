@@ -4,25 +4,14 @@
 
 function MapController($scope, $location, $http) {
 
-    $(".search").select2({
-        placeholder: "Supernodos",
-        ajax: {
-            url: "/api/supernodos/search",
-            data: function(term, page) {
-                return {
-                    q: term
-                };
-            },
-            results: function(data) {
-                return {
-                    results: data
-                };
-            }
-        }
+    $http.get("/api/supernodos/search").success(function(response) {
+        $scope.searchItems = response;
     });
 
-    $(".search").on("change", function(data) {
-        window.location = "/supernodo/#/" + $(this).val();
+    $scope.$watch("goto", function(nv, ov) {
+        if (nv) {
+            window.location = "/supernodo/#/" + nv;
+        }
     });
 
     angular.extend($scope, {
@@ -79,10 +68,11 @@ function MapController($scope, $location, $http) {
         }
     };
 
-    $scope.toggleGps = function() {
+    $scope.$watch("gps", function(nv, ov) {
         $scope.newmarker = false;
+        var gps = nv;
 
-        if (!$scope.gps) {
+        if (!gps) {
             $http.get("/api/enlace/").success(function(response) {
                $scope.links = response;
             });
@@ -92,7 +82,7 @@ function MapController($scope, $location, $http) {
         } else {
             $scope.links = [];
         }
-    };
+    });
 
     $scope.$watch("path", function(newValue, oldValue) {
         var path = newValue;
@@ -103,7 +93,5 @@ function MapController($scope, $location, $http) {
             });
         }
     }, true);
-
-    $scope.toggleGps();
 
 }

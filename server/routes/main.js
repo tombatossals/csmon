@@ -170,8 +170,8 @@ module.exports = function(app, urls) {
                                       '--font AXIS:7: --font LEGEND:8: --font UNIT:7: ' +
                                       'DEF:a="' + a + '":"rx":AVERAGE:step=1200 ' +
                                       'DEF:b="' + a + '":"tx":AVERAGE:step=1200 ' + 
-                                      'DEF:c="' + b + '":"rx":AVERAGE:step=300 ' +
-                                      'DEF:d="' + b + '":"tx":AVERAGE:step=300 ' +
+                                      'DEF:c="' + b + '":"rx":AVERAGE:step=1200 ' +
+                                      'DEF:d="' + b + '":"tx":AVERAGE:step=1200 ' +
                                       'CDEF:cdefb=b,-1,* CDEF:cinbits=c,8,* ' +
                                       'CDEF:cdeff=d,8,* CDEF:dinbits=cdeff,-1,* ' +
                                       'AREA:a#4444FFFF:"Bandwidth TX"  ' +
