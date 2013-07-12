@@ -1,11 +1,11 @@
 // include angular loader, which allows the files to load in any order
 /*
- AngularJS v1.0.0rc1
- (c) 2010-2012 AngularJS http://angularjs.org
+ AngularJS v1.0.6
+ (c) 2010-2012 Google, Inc. http://angularjs.org
  License: MIT
 */
-'use strict';(function(i){function d(c,a,e){return c[a]||(c[a]=e())}return d(d(i,"angular",Object),"module",function(){var c={};return function(a,e,f){e&&c.hasOwnProperty(a)&&(c[a]=null);return d(c,a,function(){function b(a,b,d){return function(){c[d||"push"]([a,b,arguments]);return g}}if(!e)throw Error("No module: "+a);var c=[],d=[],h=b("$injector","invoke"),g={_invokeQueue:c,_runBlocks:d,requires:e,name:a,provider:b("$provide","provider"),factory:b("$provide","factory"),service:b("$provide","service"),
-      value:b("$provide","value"),constant:b("$provide","constant","unshift"),filter:b("$filterProvider","register"),directive:b("$compileProvider","directive"),config:h,run:function(a){d.push(a);return this}};f&&h(f);return g})}})})(window);
+(function(i){'use strict';function d(c,b,e){return c[b]||(c[b]=e())}return d(d(i,"angular",Object),"module",function(){var c={};return function(b,e,f){e&&c.hasOwnProperty(b)&&(c[b]=null);return d(c,b,function(){function a(a,b,d){return function(){c[d||"push"]([a,b,arguments]);return g}}if(!e)throw Error("No module: "+b);var c=[],d=[],h=a("$injector","invoke"),g={_invokeQueue:c,_runBlocks:d,requires:e,name:b,provider:a("$provide","provider"),factory:a("$provide","factory"),service:a("$provide","service"),
+    value:a("$provide","value"),constant:a("$provide","constant","unshift"),filter:a("$filterProvider","register"),controller:a("$controllerProvider","register"),directive:a("$compileProvider","directive"),config:h,run:function(a){d.push(a);return this}};f&&h(f);return g})}})})(window);
 
 // include a third-party async loader library
 /*!
@@ -19,9 +19,9 @@
 
 // load all of the dependencies asynchronously.
 $script('/components/jquery/jquery.min.js', function() {
-    $script([ '/components/angular/angular.min.js', '/components/select2/select2.min.js' ],function() {
-        $script([ '/components/angular-ui/build/angular-ui.min.js', '/components/qtip/jquery.qtip.min.js', '/components/angular-bootstrap/src/dropdownToggle/dropdownToggle.js', '/components/angular-bootstrap/src/buttons/buttons.js', '/components/angular-bootstrap/src/transition/transition.js', '/components/angular-bootstrap/src/dialog/dialog.js', '/components/angular-bootstrap/src/modal/modal.js', '/js/directives/angular-google-maps.js', '/js/controllers/map.js', '/js/controllers/user.js', '/js/controllers/enlace.js', '/js/controllers/supernodo.js' ], function() {
-	    angular.module('mainApp', ['google-maps', 'ui.bootstrap.buttons', 'ui.bootstrap.dropdownToggle', 'ui.bootstrap.modal', 'ui']);
+    $script([ '/components/angular/angular.js', '/components/select2/select2.min.js', '/components/qtip/jquery.qtip.min.js' ],function() {
+        $script([ '/components/angular-ui-select2/src/select2.js', '/components/angular-bootstrap/ui-bootstrap.min.js', '/js/directives/angular-google-maps.js', '/js/controllers/user.js', '/js/controllers/enlace.js', '/js/controllers/supernodo.js' ], function() {
+	    angular.module('mainApp', ['google-maps', 'ui.bootstrap.modal', 'ui.select2' ]);
             angular.bootstrap(document, ['mainApp']);
         });
     });

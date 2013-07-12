@@ -19,8 +19,8 @@ function configure() {
       function(accessToken, refreshToken, profile, done) {
           var userData = { displayName: profile.displayName, email: profile.emails[0].value, name: profile.name };
 
-          User.findOrCreate(userData, function (err, user) {
-              return done(err, user);
+          User.findOne(userData, function (err, user) {
+             return done(err, user);
           });
       }
     ));

@@ -86,9 +86,12 @@ function update_bandwidth_link(enlace, countdown_and_exit) {
  
                    enlace.bandwidth = bandwidth;
                    enlace.saturation = saturation;
-                   enlace.save(function() {
-                       logger.debug(util.format("Updated bandwidth %s-%s: saturation %s, bandwidth %s", s1.name, s2.name, saturation, bandwidth));
-                       countdown_and_exit(enlace.id);
+                   enlace.save(function(err) {
+			if (err) {
+				console.log(err);
+			}
+                       	logger.debug(util.format("Updated bandwidth %s-%s: saturation %s, bandwidth %s", s1.name, s2.name, saturation, bandwidth));
+                       	countdown_and_exit(enlace.id);
                    });
                });
                     

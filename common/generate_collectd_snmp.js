@@ -25,6 +25,7 @@ Supernodo.find(function(err, supernodos) {
         console.log("  <Host \"" + supernodo.name + "\">");
         console.log("      Address \"" + supernodo.mainip + "\"");
         console.log("      Version 2");
+        console.log("      Interval 300");
         console.log("      Community \"public\"");
         console.log("      Collect \"std_traffic\"");
         console.log("  </Host>");

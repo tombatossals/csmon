@@ -1,5 +1,5 @@
 !!! 5
-html
+html(ng-app="mainApp")
   head
     meta(charset='utf-8')
     title= typeof(locals.title) !== 'undefined' ? locals.title : "Troncal de La Plana"
@@ -9,9 +9,18 @@ html
     link(rel="stylesheet", href=urls.base + "components/select2/select2.css")
     link(rel="stylesheet", href=urls.base + "styles/main-absolute.css")
     script(src="http://maps.googleapis.com/maps/api/js?sensor=false&libraries=geometry&language=es")
-    script(src=urls.base + "js/main.js")
+    script(src="/components/jquery/jquery.min.js")
+    script(src="/components/select2/select2.min.js")
+    script(src="/components/angular/angular.min.js")
+    script(src="/components/angular-ui-select2/src/select2.js")
+    script(src="/components/qtip/jquery.qtip.min.js")
+    script(src="/components/angular-bootstrap/ui-bootstrap.min.js")
+    script(src=urls.base + "js/directives/angular-google-maps.js")
+    script(src=urls.base + "js/controllers/map.js")
+    script
+        angular.module('mainApp', ['google-maps', 'ui.bootstrap.modal', 'ui.select2', 'ui.bootstrap.dropdownToggle', 'ui.bootstrap.buttons' ]);
 
-  body(ng-controller=locals.angular_controller, ng-cloak)
+  body(ng-controller=locals.controller, ng-cloak)
     div.container
       header
         div.navbar.navbar-fixed-top.mainmenu

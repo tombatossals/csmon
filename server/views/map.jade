@@ -2,14 +2,6 @@ extends layout-absolute
 block main
   google-map(center="center", zoom="zoom", markers="markers", links="links", newmarker="newmarker", gps="gps", path="path")
 
-  div(modal="shouldBeOpen", close="close()")
-    div.modal-header
-      h4 I'm a modal!
-    div.modal-body
-      with some content...
-    div.modal-footer
-      button.btn.btn-warning.cancel(ng-click="close()") Cancel
-
   div(ng-show="gps", style="position: absolute; top: 5em; left: 3em; z-index: 100;")
     div.alert.alert-block(style="border: 1px solid #c09853;")
       h3(style="margin: 0.1em; padding: 0em;") GPS utility

@@ -20,8 +20,6 @@ function MapController($scope, $location, $http) {
                 lng: -0.039139
 	},
 	markers: [],
-	links: [],
-        path: [],
 	zoom: 13,
         gps: false,
         newmarker: false
@@ -86,6 +84,7 @@ function MapController($scope, $location, $http) {
 
     $scope.$watch("path", function(newValue, oldValue) {
         var path = newValue;
+        if (!path) return;
         $scope.links = [];
         if (path.length === 2) {
             $http.get("/api/path/" + path[0].name + "/" + path[1].name).success(function(response) {

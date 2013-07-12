@@ -42,6 +42,11 @@ function SupernodoController($scope, $location, $http) {
             $scope.title = "Supernodo " + response.name + " (" + response.mainip + ")";
             $scope.hash = response.name;
 
+            $scope.graph_ping_url = "/graph/ping/" + response.name;
+            $scope.graph_ping_url_weekly = $scope.graph_ping_url + "?interval=weekly";
+            $scope.graph_ping_url_monthly = $scope.graph_ping_url + "?interval=monthly";
+            $scope.graph_ping_url_year = $scope.graph_ping_url + "?interval=year";
+
             if (response.omnitik) {
                 $scope.graph_image_url = "/graph/users/" + response.name;
                 $scope.graph_image_url_weekly = $scope.graph_image_url + "?interval=weekly";
@@ -51,6 +56,10 @@ function SupernodoController($scope, $location, $http) {
 
             $http.get("/api/supernodo/" + response._id + "/neighbours").success(function(response) {
                 $scope.supernodos = response.supernodos;
+            });
+
+            $http.get("/api/supernodo/" + response.name + "/clients").success(function(response) {
+                $scope.clientes = response;
             });
         });
     }

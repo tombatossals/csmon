@@ -26,7 +26,11 @@ if (!INTERVAL) {
 }
 
 function monitor_users(supernodo, countdown_and_exit) {
-    getConnectedUsers(supernodo.mainip, supernodo.username, supernodo.password, function(users) {
+    var ip = supernodo.mainip;
+    if (supernodo.omnitikip) {
+      ip = supernodo.omnitikip;
+    }
+    getConnectedUsers(ip, supernodo.username, supernodo.password, function(users) {
         if (users && users.hasOwnProperty("good")) {
             console.log(util.format("PUTVAL \"%s/node/connected_users\" interval=%s N:%s:%s", supernodo.name, INTERVAL, users.good, users.bad));
             logger.debug(util.format("PUTVAL \"%s/node/connected_users\" interval=%s N:%s:%s", supernodo.name, INTERVAL, users.good, users.bad));

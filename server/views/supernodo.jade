@@ -54,7 +54,25 @@ block main
             td
               strong {{ s.mainip }}
 
+    h2 Ping hasta el supernodo Castalia
+    div.row
+      div.span5
+        h3 Daily graph
+        img(ng-src="{{ graph_ping_url }}")
+      div.span5
+        h3 Weekly graph
+        img(ng-src="{{ graph_ping_url_weekly }}")
+    div.row
+      div.span5
+        h3 Monthly graph
+        img(ng-src="{{ graph_ping_url_monthly }}")
+      div.span5
+        h3 Year graph
+        img(ng-src="{{ graph_ping_url_year }}")
+
     div.row(ng-show="supernodo.omnitik")
+      div.span12
+        h2 Número de clientes conectados a la antena de cobertura
       div.span5
         h3 Daily graph
         img(ng-src="{{ graph_image_url }}")

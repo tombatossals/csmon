@@ -12,6 +12,9 @@ var SupernodoSchema = new Schema({
     email: {
         type: String
     },
+    omnitikip: {
+        type: String
+    },
     mainip: {
         type: String
     },

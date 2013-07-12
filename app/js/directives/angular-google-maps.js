@@ -333,7 +333,6 @@
           
           return;
         }
-        
         angular.element(element).addClass("angular-google-map");
        
         // Create our model
@@ -371,6 +370,7 @@
 
         scope.$watch("links", function(newArray, oldArray) {
             _m.clearLinks();
+	    if (!newArray) return;
             if (newArray.length > 0) {
               $timeout(function () {
                 angular.forEach(newArray, function(enlace) {
@@ -509,6 +509,7 @@
                             return function() {
                                 if (scope.gps) {
                                     var found = false;
+				    if (!scope.path) scope.path = new Array();
                                     for (var i=0; i<scope.path.length;i++) {
                                         if (supernodo.name == scope.path[i].name) {
                                             _m.deactivateMarker(scope.path[i].name);

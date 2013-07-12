@@ -11,6 +11,7 @@
     "nodemon"  :  "latest",
     "grunt-cli"  :  "latest",
     "optimist"  :  "latest",
+    "pm2"  :  "latest",
     "underscore" :  "latest",
     "jayson" :  "latest",
     "mongoose-findorcreate" :  "latest",
@@ -23,6 +24,7 @@
     "passport-google-oauth"   :  "latest",
     "session-mongoose"   :  "latest",
     "passport-google"   :  "latest",
+    "bower"   :  "latest",
     "jade"   :  "latest"
   },
   "repository": {

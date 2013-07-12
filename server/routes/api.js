@@ -4,6 +4,7 @@ var Supernodo = require('../../common/models/supernodo'),
     Enlace    = require('../../common/models/enlace'),
     findByIp  = require('../../common/common').findByIp,
     User      = require('../../common/models/user'),
+    fs        = require('fs'),
     mikrotik_traceroute = require('../../common/mikrotik').traceroute,
     openwrt_traceroute = require('../../common/openwrt').traceroute,
     ensureAuthenticated = require('../../common/google_auth').ensureAuthenticated;
@@ -57,6 +58,31 @@ module.exports = function(app, urls) {
             enlace.save(function() {
                 res.send(200);
             });
+        });
+    });
+
+    app.get(urls.api.clientesBySupernodoName, function(req, res) {
+        var name = req.params.name;
+        var query = new Object();
+	query["name"] = name;
+
+        Supernodo.findOne(query, function(err, supernodo) {
+            if (err) {
+                throw err;
+            } else if (!supernodo.omnitik) {
+                res.send(500);
+            } else {
+                var files = fs.readdir("/var/lib/collectd/" + supernodo.mainip + "/routeros/", function(err, files) {
+                    var clients = [];
+                    for (var i in files) {
+                        var file = files[i];
+                        if (file.match("^snr-wlan[0-9]-")) {
+                            clients.push(file.split("-")[2].split(".")[0]);
+                        }
+                    }
+                    res.send(clients);
+                });
+            }
         });
     });
 

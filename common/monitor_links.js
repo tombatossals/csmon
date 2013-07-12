@@ -21,7 +21,7 @@ var db = mongoose.connect(conn);
 var INTERVAL = process.env.COLLECTD_INTERVAL;
 
 if (!INTERVAL) {
-	INTERVAL = 1200;
+	INTERVAL = 7200;
 }
 
 function get_testing_ip(enlace, supernodo) {
@@ -120,6 +120,7 @@ function bandwidth_test_mikrotik(enlace, s1, s2, cb) {
     var interval = 5;
     var duration = 19;
     var testip = get_testing_ip(enlace, s2);
+
     if (testip) {
         c.on("ready", function() {
             c.exec(util.format(":global ip; :global username; :global password; :global interval; :global duration; :set ip %s; :set username %s; :set password %s; :set interval %s; :set duration %s; /system script run bandwidth", testip, username2, password2, interval, duration), function(err, stream) {
