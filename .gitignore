@@ -5,3 +5,9 @@ data/dumps
 scripts/traceroute.sh
 components
 backup
+temp
+libpeerconnection.log
+*.swp
+.*.swp
+*.iml
+.idea
