@@ -5,8 +5,8 @@ var argv = require("optimist").usage("Usage: $0 [generate [collectd_snmp|collect
 
 
 function check_parameters(argv) {
-    var sections = [ [ "generate", "monitor", "update" ], [ "collectd_snmp", "collectd_ping", "collectd_routeros", "interfaces", "links", "users", "bandwidth" ] ];
-    for (var i=0; i<argv._.length; i++) { 
+    var sections = [ [ "generate", "monitor", "update", "report" ], [ "collectd_snmp", "collectd_ping", "collectd_routeros", "interfaces", "links", "users", "bandwidth" ] ];
+    for (var i=0; i<argv._.length; i++) {
         var section = sections[i];
         var argument = argv._[i];
         if (section.indexOf(argument) === -1) {

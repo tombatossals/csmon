@@ -20,6 +20,13 @@ var EnlaceSchema = new Schema({
     active: {
         type: Boolean
     },
+
+    subscriptions : [{
+        email: {
+            type: String
+        }
+    }],
+
     supernodos: [{
         id: {
             type: String

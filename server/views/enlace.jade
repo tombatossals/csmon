@@ -3,7 +3,9 @@ block main
   div(style="margin: 3em auto; width: 995px;", ng-show="enlace")
     h2(style="border-bottom: 2px solid #888; margin-bottom: .2em;", ng-bind="title") Enlace
     if (locals.user)
-      div.pull-right
+      div.pull-right(style="margin-bottom: 1em;")
+        span.label.label-success(ng-cloak, ng-show="messageOk", style="margin-right: 1em;") Changes saved!
+        button.btn.btn-warning(ng-model="subscribed", ng-click="changeSubscription()", btn-checkbox="", style="margin-right: 1em;") Subscribe
         button.btn.btn-danger(ng-click="openModal()") Remove link
 
     div.row(style="clear: both;", ng-show="enlace")

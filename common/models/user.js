@@ -16,6 +16,10 @@ var UserSchema = new Schema({
             required: true
         }
     },
+    pushover: {
+        type: String,
+        unique: true
+    },
     phone: {
         type: String,
         unique: true

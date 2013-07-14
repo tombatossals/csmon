@@ -13,6 +13,7 @@
         "enlaceBySupernodos": "api/enlace/:s1/:s2",
         "path": "api/path/:s1/:s2",
         "enlaceById": "api/enlace/:id",
+        "enlaceByIdSubscription": "api/enlace/:id/subscription",
         "supernodoSearch": "api/supernodos/search",
         "neighbours": "api/supernodo/:id/neighbours",
         "user": "api/user"

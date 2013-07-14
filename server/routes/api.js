@@ -7,7 +7,8 @@ var Supernodo = require('../../common/models/supernodo'),
     fs        = require('fs'),
     mikrotik_traceroute = require('../../common/mikrotik').traceroute,
     openwrt_traceroute = require('../../common/openwrt').traceroute,
-    ensureAuthenticated = require('../../common/google_auth').ensureAuthenticated;
+    ensureAuthenticated = require('../../common/google_auth').ensureAuthenticated,
+    checkAuthenticated = require('../../common/google_auth').checkAuthenticated;
 
 module.exports = function(app, urls) {
 
@@ -157,6 +158,7 @@ module.exports = function(app, urls) {
 
     app.put(urls.api.user, ensureAuthenticated, function(req, res) {
         var phone = req.body.phone;
+        var pushover = req.body.pushover;
 
         var query = new Object();
         query["email"] = req.user.email;
@@ -164,6 +166,7 @@ module.exports = function(app, urls) {
         User.findOne(query, function(err, user) {
             if (err) throw err;
             user.phone = phone;
+            user.pushover = pushover;
             user.save(function() {
                 return res.json(user);
             });
@@ -183,7 +186,7 @@ module.exports = function(app, urls) {
     app.get(urls.api.neighbours, function(req, res) {
         var id = req.params.id;
         Enlace.find({ "supernodos.id": { $in: [ id ] } }, function(err, enlaces ) {
-            if (err) { 
+            if (err) {
                 throw err;
             } else {
                 var neighbours = Array();
@@ -195,8 +198,8 @@ module.exports = function(app, urls) {
                     } else {
                         neighbours.push(supernodos[0].id);
                     }
-                } 
-                Supernodo.find( { _id: { $in: neighbours } }, function( err, supernodos) { 
+                }
+                Supernodo.find( { _id: { $in: neighbours } }, function( err, supernodos) {
                     res.send({ supernodos: supernodos });
                 });
             }
@@ -219,7 +222,7 @@ module.exports = function(app, urls) {
                 } else {
                     traceroute = openwrt_traceroute;
                 }
-                
+
                 traceroute(s1.mainip, s1.username, s1.password, s2.mainip, function(path) {
                     console.log(path);
                     var count = path.count;
@@ -259,9 +262,14 @@ module.exports = function(app, urls) {
         });
     });
 
-    app.get(urls.api.enlaceBySupernodos, function(req, res) {
+    app.get(urls.api.enlaceBySupernodos, checkAuthenticated, function(req, res) {
         var s1 = req.params.s1;
         var s2 = req.params.s2;
+        var email = "";
+        if (req.user && req.user.email && req.user.email.length > 0) {
+            email = req.user.email[0];
+        }
+
         Supernodo.find({ name: { $in: [ s1, s2 ] } }, function(err, supernodos) {
 
             if (!supernodos || supernodos.length != 2) {
@@ -270,9 +278,40 @@ module.exports = function(app, urls) {
                 var s1 = supernodos[0];
                 var s2 = supernodos[1];
                 Enlace.findOne({ "supernodos.id": { $all: [ s1.id, s2.id ] } }, function(err, enlace) {
+                    var subscribed = false;
+                    var subscriptions = enlace["subscriptions"];
+                    for (var i = 0; i < subscriptions.length; i++) {
+                        var e = subscriptions[i];
+                        if (e.email === email) {
+                            subscribed = true;
+                        }
+                    }
+                    enlace["subscriptions"] = [];
+                    if (subscribed) {
+                        enlace["subscriptions"].push({ email: email });
+                    }
                     res.send({ enlace: enlace, s1: s1, s2: s2 });
                 });
             }
+        });
+    });
+
+    app.put(urls.api.enlaceByIdSubscription, ensureAuthenticated, function(req, res) {
+        var subscription = req.body.subscription;
+        var email = req.user.email[0];
+        var id = req.params.id;
+        Enlace.findOne({ _id: id }, function(err, enlace) {
+            enlace.subscriptions = [];
+            if (subscription) {
+                enlace.subscriptions.push({ email: email });
+            }
+            enlace.save(function(err) {
+                if (err) {
+                    throw err;
+                } else {
+                    res.send(200);
+                }
+            });
         });
     });
 

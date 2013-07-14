@@ -34,6 +34,10 @@ function configure() {
     });
 }
 
+function checkAuthenticated(req, res, next) {
+    next();
+}
+
 function ensureAuthenticated(req, res, next) {
     if (req.isAuthenticated()) { return next(); }
     req.session.redirectUrl = req.url;
@@ -41,4 +45,5 @@ function ensureAuthenticated(req, res, next) {
 }
 
 module.exports.ensureAuthenticated = ensureAuthenticated;
+module.exports.checkAuthenticated = checkAuthenticated;
 module.exports.configure = configure;
