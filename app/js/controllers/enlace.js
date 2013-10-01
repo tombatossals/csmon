@@ -5,7 +5,9 @@
 function EnlaceController($scope, $location, $http) {
 
     $scope.location = $location;
-    $scope.messageOk = false;
+    $scope.subscribed = false;
+    $scope.bandwidth = 10;
+    $scope.subscriptionText = "Not subscribed";
     $scope.$watch("location.path()", function() {
         if ($location.path()) {
             var supernodos = $location.path().replace("/", "").split("/");
@@ -40,12 +42,25 @@ function EnlaceController($scope, $location, $http) {
         newmarker: false
     });
 
-    $scope.changeSubscription = function() {
-console.log("change");
-        var subscribed = $scope.subscribed;
-        $http.put("/api/enlace/" + $scope.enlace._id + "/subscription", { subscription: !subscribed }).success(function(response) {
-            $scope.subscription = !subscribed;
-            $scope.messageOk = true;
+    $scope.clickedSubscription = function() {
+        if ($scope.subscribed) {
+            $scope.changeSubscription(false);
+        } else {
+            $scope.openSubscriptionModal();
+        }
+    }
+
+    $scope.changeSubscription = function(subscription) {
+        var bandwidth = $scope.bandwidth;
+        $http.put("/api/enlace/" + $scope.enlace._id + "/subscription", { subscription: subscription, bandwidth: bandwidth }).success(function(response) {
+            $scope.subscribeShouldBeOpen = false;
+            if (subscription) {
+                $scope.subscriptionText = "Subscribed (" + $scope.bandwidth + "Mbits limit)";
+                $scope.subscribed = true;
+            } else {
+                $scope.subscriptionText = "Not subscribed";
+                $scope.subscribed = false;
+            }
         });
     }
 
@@ -61,6 +76,10 @@ console.log("change");
             $scope.s2 = response.s2;
             if (response.enlace.subscriptions && response.enlace.subscriptions.length > 0) {
                 $scope.subscribed = true;
+                if (response.enlace.subscriptions[0].bandwidth !== undefined) {
+                    $scope.bandwidth = response.enlace.subscriptions[0].bandwidth;
+                }
+                $scope.subscriptionText = "Subscribed (" + $scope.bandwidth + "Mbits limit)";
             }
             $scope.graph_image_url = "/graph/" + response.s1.name + "/" + response.s2.name;
             $scope.graph_image_url_weekly = $scope.graph_image_url + "?interval=weekly";
@@ -70,24 +89,27 @@ console.log("change");
         });
     }
 
-    $scope.saveUser = function() {
-        $scope.messageOk = false;
-        $http.put("/api/user/", { phone: $scope.phone }).success(function(response) {
-            $scope.messageOk = true;
-        });
-    };
-
     $scope.removeLink = function(s1, s2) {
         $http.delete("/api/enlace/" + $scope.enlace._id).success(function(response) {
             window.location = "/";
         });
     };
 
-    $scope.openModal = function() {
-        $scope.shouldBeOpen = true;
+    $scope.openSubscriptionModal = function() {
+        $scope.subscribeShouldBeOpen = true;
+    };
+
+    $scope.openDeleteModal = function() {
+        $scope.deleteShouldBeOpen = true;
+    };
+
+    $scope.cancel = function() {
+        $scope.close();
+        $scope.subscribed = false;
     };
 
     $scope.close = function() {
-        $scope.shouldBeOpen = false;
+        $scope.deleteShouldBeOpen = false;
+        $scope.subscribeShouldBeOpen = false;
     };
 }

@@ -43,24 +43,11 @@ function get_data_from_command_line(enlace, s1, s2, cb) {
            result.bandwidth = parseInt(bandwidth/(2*1024*1024), 10);
        } else {
            result.bandwidth = 0;
+           result.bandwidth_rx = 0;
+           result.bandwidth_tx = 0;
        }
 
-        var message = "";
-       if (result.bandwidth < 10 || result.bandwidth_rx < 10 || result.bandwidth_tx < 10) {
-            message = util.format("Enlace: %s-%s, ancho de banda: %s", s1.name, s2.name, result.bandwidth);
-            var title = util.format("%s-%s", s1.name, s2.name);
-            var subs = enlace.subscriptions;
-            if (subs.length > 0) {
-                for (var i=0; i< subs.length; i++) {
-                    var email = subs[i].email;
-                    sendpush(email, message, title, cb);
-                }
-            } else {
-                cb(message);
-            }
-        } else {
-            cb(message);
-        }
+        sendpush(result, enlace, cb);
    });
 }
 
@@ -111,9 +98,8 @@ Enlace.find(query).exec(function(err, enlaces) {
         }
         if (waitfor.length == 0) {
             var server  = email.server.connect(settings.email_options);
-console.log(emailtxt.join("\n"));
-                mongoose.disconnect();
-                process.exit(0);
+            mongoose.disconnect();
+            process.exit(0);
 /*
             server.send({
                 from: "scooby@micronautas.com",

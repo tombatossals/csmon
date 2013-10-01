@@ -22,6 +22,9 @@ var EnlaceSchema = new Schema({
     },
 
     subscriptions : [{
+        bandwidth: {
+            type: Number
+        },
         email: {
             type: String
         }
@@ -29,6 +32,9 @@ var EnlaceSchema = new Schema({
 
     supernodos: [{
         id: {
+            type: String
+        },
+        name: {
             type: String
         },
         iface: {

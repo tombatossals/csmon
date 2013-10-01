@@ -11,10 +11,10 @@ var logger    = require("./log"),
 var conn = 'mongodb://localhost/troncales';
 var db = mongoose.connect(conn);
 
-//process.on('uncaughtException', function(err) {  
-//    mongoose.connection.close();  
-//    process.exit(-1);  
-//});  
+//process.on('uncaughtException', function(err) {
+//    mongoose.connection.close();
+//    process.exit(-1);
+//});
 
 Enlace.find(function(err, enlaces) {
     if (err) { throw err };
@@ -48,7 +48,7 @@ Enlace.find(function(err, enlaces) {
                 duplicates[s1].push(s2);
             }
         } else {
-            duplicates[s1] = [ s2 ];    
+            duplicates[s1] = [ s2 ];
         }
 
         if (duplicates.hasOwnProperty(s2)) {
@@ -62,7 +62,7 @@ Enlace.find(function(err, enlaces) {
                 duplicates[s2].push(s1);
             }
         } else {
-            duplicates[s2] = [ s1 ];    
+            duplicates[s2] = [ s1 ];
         }
 
         Supernodo.find({ _id: { $in: [ s1, s2 ] } }, function(err, supernodos) {
@@ -82,23 +82,27 @@ Enlace.find(function(err, enlaces) {
                                 found = true;
                                 if (enlace.supernodos[0].id == s1._id.toString()) {
                                     enlace.supernodos[0].iface = iface.name;
+                                    enlace.supernodos[0].name  = s1.name;
                                     enlace.supernodos[1].iface = iface2.name;
+                                    enlace.supernodos[1].name  = s2.name;
                                 } else {
                                     enlace.supernodos[1].iface = iface.name;
+                                    enlace.supernodos[1].name  = s1.name;
                                     enlace.supernodos[0].iface = iface2.name;
+                                    enlace.supernodos[0].name  = s2.name;
                                 }
                                 enlace.network = network.base + "/" + network.bitmask;
                                 enlace.active = true;
                                 enlace.save(function() {
-            		        logger.info(util.format("Supernode interfaces updated: %s-%s", s1.name, s2.name));
-			        end();
+            		                logger.info(util.format("Supernode interfaces updated: %s-%s", s1.name, s2.name));
+			                        end();
                             });
                             }
                         }
                     }
                 }
             }
-    
+
             if (!found) {
               logger.error(util.format("Link not found: %s-%s %s", s1.name, s2.name, enlace._id));
               end();

@@ -74,7 +74,7 @@ module.exports = function(app, urls) {
                 return;
             }
 
-            var step = 3600*24; 
+            var step = 3600*24;
             var start = -604800*4;
 
             var command = '/usr/bin/rrdtool graph - --imgformat=PNG ' +
@@ -94,7 +94,7 @@ module.exports = function(app, urls) {
                           'GPRINT:b:LAST:"Last%8.2lf %s" GPRINT:b:AVERAGE:"Avg%8.2lf %s"  ' +
                           'GPRINT:b:MAX:"Max%8.2lf %s" GPRINT:b:MIN:"Min%8.2lf %s\\n"';
 
-            exec(command, { encoding: 'binary', maxBuffer: 5000*1024 }, function(error, stdout, stderr) {   
+            exec(command, { encoding: 'binary', maxBuffer: 5000*1024 }, function(error, stdout, stderr) {
                 res.type('png');
                 res.send(new Buffer(stdout, 'binary'));
             });
@@ -114,7 +114,7 @@ module.exports = function(app, urls) {
             }
 
             var start = -86400;
-            var step = 1200; 
+            var step = 1200;
             if (interval == "weekly") {
                 start = -604800;
                 step = 3600*2;
@@ -135,7 +135,7 @@ module.exports = function(app, urls) {
                           '--font AXIS:7: --font LEGEND:8: --font UNIT:7: ' +
                           'DEF:ptime=' + a + ':value:AVERAGE LINE:ptime#6188AB:"Pingtime"';
 
-            exec(command, { encoding: 'binary', maxBuffer: 5000*1024 }, function(error, stdout, stderr) {   
+            exec(command, { encoding: 'binary', maxBuffer: 5000*1024 }, function(error, stdout, stderr) {
                 res.type('png');
                 res.send(new Buffer(stdout, 'binary'));
             });
@@ -155,7 +155,7 @@ module.exports = function(app, urls) {
             }
 
             var start = -86400;
-            var step = 1200; 
+            var step = 1200;
             if (interval == "weekly") {
                 start = -604800;
                 step = 3600*2;
@@ -177,7 +177,7 @@ module.exports = function(app, urls) {
                           'DEF:a="' + a + '":"good":MAX:step=1200 ' +
                           'DEF:b="' + a + '":"bad":MAX:step=1200 ' +
                           'AREA:b#EA644A:"Connected users (bad signal)": ' +
-                          'LINE:b#CC3118 ' + 
+                          'LINE:b#CC3118 ' +
                           'GPRINT:b:LAST:"Last %.0lf" ' +
                           'GPRINT:b:MAX:"Max %.0lf" ' +
                           'GPRINT:b:MIN:"Min %.0lf\\n" ' +
@@ -186,7 +186,7 @@ module.exports = function(app, urls) {
                           'GPRINT:a:MAX:"Max %.0lf" ' +
                           'GPRINT:a:MIN:"Min %.0lf\\n"';
 
-            exec(command, { encoding: 'binary', maxBuffer: 5000*1024 }, function(error, stdout, stderr) {   
+            exec(command, { encoding: 'binary', maxBuffer: 5000*1024 }, function(error, stdout, stderr) {
                 res.type('png');
                 res.send(new Buffer(stdout, 'binary'));
             });
@@ -240,7 +240,7 @@ module.exports = function(app, urls) {
                         }
 
                         var start = -86400;
-                        var step = 300; 
+                        var step = 300;
                         if (interval == "weekly") {
                             start = -604800;
                             step = 3600*2;
@@ -260,7 +260,7 @@ module.exports = function(app, urls) {
                                       '--vertical-label="bits per second" --font TITLE:10: ' +
                                       '--font AXIS:7: --font LEGEND:8: --font UNIT:7: ' +
                                       'DEF:a="' + a + '":"rx":AVERAGE:step=1200 ' +
-                                      'DEF:b="' + a + '":"tx":AVERAGE:step=1200 ' + 
+                                      'DEF:b="' + a + '":"tx":AVERAGE:step=1200 ' +
                                       'DEF:c="' + b + '":"rx":AVERAGE:step=300 ' +
                                       'DEF:d="' + b + '":"tx":AVERAGE:step=300 ' +
                                       'CDEF:cdefb=b,-1,* CDEF:cinbits=c,8,* ' +
@@ -279,7 +279,7 @@ module.exports = function(app, urls) {
                                       'GPRINT:cdeff:LAST:"Last%8.2lf %s" GPRINT:cdeff:AVERAGE:"Avg%8.2lf %s"  ' +
                                       'GPRINT:cdeff:MAX:"Max%8.2lf %s" GPRINT:cdeff:MIN:"Min%8.2lf %s\\n"';
 
-                        exec(command, { encoding: 'binary', maxBuffer: 5000*1024 }, function(error, stdout, stderr) {   
+                        exec(command, { encoding: 'binary', maxBuffer: 5000*1024 }, function(error, stdout, stderr) {
                             res.type('png');
                             res.send(new Buffer(stdout, 'binary'));
                         });

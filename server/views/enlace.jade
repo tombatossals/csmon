@@ -4,9 +4,8 @@ block main
     h2(style="border-bottom: 2px solid #888; margin-bottom: .2em;", ng-bind="title") Enlace
     if (locals.user)
       div.pull-right(style="margin-bottom: 1em;")
-        span.label.label-success(ng-cloak, ng-show="messageOk", style="margin-right: 1em;") Changes saved!
-        button.btn.btn-warning(ng-model="subscribed", ng-click="changeSubscription()", btn-checkbox="", style="margin-right: 1em;") Subscribe
-        button.btn.btn-danger(ng-click="openModal()") Remove link
+        button.btn(ng-model="subscribed", ng-class="subscribed && 'btn-success' || 'btn-warning'", ng-click="clickedSubscription()", btn-checkbox="", style="margin-right: 1em;") {{ subscriptionText }}
+        button.btn.btn-danger(ng-click="openDeleteModal()") Remove link
 
     div.row(style="clear: both;", ng-show="enlace")
       div.span6
@@ -27,6 +26,11 @@ block main
                   a(ng-href="/supernodo/#/{{ s2.name }}") {{ s2.name }}
               td
                 strong {{ s2.mainip }}
+            tr
+              td
+                strong Red privada
+              td
+                strong {{ enlace.network }}
       div.span4.pull-right
         google-map(center="center", markers="markers", links="links")
 
@@ -45,10 +49,24 @@ block main
         h3 Year graph
         img(ng-src="{{ graph_image_url_year }}")
 
-  div(modal="shouldBeOpen", close="close()")
+  div(modal="deleteShouldBeOpen", close="close()")
     div.modal-header
       h4 Remove link
     div.modal-body Are you sure you want to to this?
     div.modal-footer
       button.btn.btn-danger.cancel(ng-click="removeLink()") Yes, do it
       button.btn(ng-click="close()") Cancel
+
+  div(modal="subscribeShouldBeOpen", close="close()")
+    div.modal-header
+      h4 Subscribe to link
+    div.modal-body
+        p Minimum bandwidth level to get notification:
+        p
+            div(style="width: 8em;")
+                strong {{ bandwidth }} Mbits
+            input(ng-model="bandwidth", type="range", min="0", max="50")
+
+    div.modal-footer
+      button.btn.btn-danger.cancel(ng-click="changeSubscription(true)") Yes, do it
+      button.btn(ng-click="cancel()") Cancel

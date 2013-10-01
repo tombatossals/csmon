@@ -38,6 +38,9 @@ module.exports = function(app, urls) {
         supernodo.latlng.lat = lat;
         supernodo.latlng.lng = lng;
         supernodo.name = "newsupernodo";
+        supernodo.username="guest";
+        supernodo.password="";
+        supernodo.system="mikrotik";
         supernodo.save(function(err) {
             if (err) {
                 throw err;
@@ -90,7 +93,7 @@ module.exports = function(app, urls) {
     app.get(urls.api.supernodoByName, function(req, res) {
         var name = req.params.name;
         var query = new Object();
-	query["name"] = name;
+	    query["name"] = name;
 
         Supernodo.findOne(query, function(err, supernodo) {
             if (err) {
@@ -277,6 +280,7 @@ module.exports = function(app, urls) {
             } else {
                 var s1 = supernodos[0];
                 var s2 = supernodos[1];
+                var bandwidth;
                 Enlace.findOne({ "supernodos.id": { $all: [ s1.id, s2.id ] } }, function(err, enlace) {
                     var subscribed = false;
                     var subscriptions = enlace["subscriptions"];
@@ -284,11 +288,13 @@ module.exports = function(app, urls) {
                         var e = subscriptions[i];
                         if (e.email === email) {
                             subscribed = true;
+                            bandwidth = e.bandwidth;
+                            break;
                         }
                     }
                     enlace["subscriptions"] = [];
                     if (subscribed) {
-                        enlace["subscriptions"].push({ email: email });
+                        enlace["subscriptions"].push({ email: email, bandwidth: bandwidth });
                     }
                     res.send({ enlace: enlace, s1: s1, s2: s2 });
                 });
@@ -296,14 +302,27 @@ module.exports = function(app, urls) {
         });
     });
 
+    app.get(urls.api.enlaceSubscription, ensureAuthenticated, function(req, res) {
+        var email = req.user.email[0];
+        var id = req.params.id;
+        Enlace.find({ "subscriptions.email": email }, function(err, enlaces) {
+            if (err) {
+                throw err;
+            } else {
+                res.send(enlaces);
+            }
+        });
+    });
+
     app.put(urls.api.enlaceByIdSubscription, ensureAuthenticated, function(req, res) {
         var subscription = req.body.subscription;
+        var bandwidth = req.body.bandwidth;
         var email = req.user.email[0];
         var id = req.params.id;
         Enlace.findOne({ _id: id }, function(err, enlace) {
             enlace.subscriptions = [];
             if (subscription) {
-                enlace.subscriptions.push({ email: email });
+                enlace.subscriptions.push({ email: email, bandwidth: bandwidth });
             }
             enlace.save(function(err) {
                 if (err) {

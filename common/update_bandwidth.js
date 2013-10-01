@@ -6,6 +6,7 @@ var logger    = require("./log"),
     exec      = require('child_process').exec,
     fs = require("fs"),
     util      = require("util"),
+    sendpush = require("./pushover").sendpush,
     Supernodo = require("./models/supernodo");
 
 var working = new Array();
@@ -20,7 +21,7 @@ if (!INTERVAL) {
 }
 
 function get_data_from_command_line(enlace, s1, s2, cb) {
-   var result = { bandwidth: 0, traffic: 0 };
+   var result = { bandwidth: 0, traffic: 0, bandwidth_tx: 0, bandwidth_rx: 0 };
    var iface = enlace.supernodos[0].iface;
 
    if (enlace.supernodos[0].id != s1._id) {
@@ -37,10 +38,14 @@ function get_data_from_command_line(enlace, s1, s2, cb) {
    exec(command, function(error, stdout, stderr) {
        var bandwidth = stdout.trim().split("\n");
        if (bandwidth.length == 2 && bandwidth[0] > 0 && bandwidth[1] > 0) {
+           result.bandwidth_rx = parseInt(bandwidth[0]/(1024*1024), 10);
+           result.bandwidth_tx = parseInt(bandwidth[1]/(1024*1024), 10);
            bandwidth = parseInt(bandwidth[0], 10) + parseInt(bandwidth[1], 10);
            result.bandwidth = parseInt(bandwidth/(2*1024*1024), 10);
        } else {
            result.bandwidth = 0;
+           result.bandwidth_rx = 0;
+           result.bandwidth_tx = 0;
        }
 
        var command = util.format('/usr/bin/rrdtool graph xxx -s $(date -d yesterday +%%s) -e $(date +%%s) DEF:val1=/var/lib/collectd/%s/snmp/if_octets-%s.rrd:tx:MAX PRINT:val1:LAST:%lf DEF:val2=/var/lib/collectd/%s/snmp/if_octets-%s.rrd:tx:MAX PRINT:val2:LAST:%lf| tail -2', s1.name, iface, s1.name, iface);
@@ -48,19 +53,20 @@ function get_data_from_command_line(enlace, s1, s2, cb) {
            var traffic = stdout.trim().split("\n");
            traffic = parseInt(traffic[0], 10) + parseInt(traffic[1], 10);
            result.traffic = parseInt(traffic*8/(2*1024*1024), 10);
-           cb(result);
+
+            sendpush(result, enlace, cb);
        });
    });
 }
 
-function update_bandwidth_link(enlace, countdown_and_exit) {
+function update_bandwidth_link(enlace, cb) {
     var s1 = enlace.supernodos[0].id;
     var s2 = enlace.supernodos[1].id;
 
     Supernodo.count({ _id: { $in: [ s1, s2 ] } }, function(err, count) {
         if (count != 2) {
             logger.error(util.format("Invalid link: %s %s %s", enlace.id, s1, s2));
-            countdown_and_exit(enlace.id);
+            cb(enlace.id);
         } else {
             Supernodo.find({ _id: { $in: [ s1, s2 ] } }, function(err, supernodos) {
                 var s1 = supernodos[0];
@@ -83,18 +89,17 @@ function update_bandwidth_link(enlace, countdown_and_exit) {
                             saturation = 3;
                         }
                    }
- 
+
                    enlace.bandwidth = bandwidth;
                    enlace.saturation = saturation;
                    enlace.save(function(err) {
-			if (err) {
-				console.log(err);
-			}
+			            if (err) {
+				            console.log(err);
+			            }
                        	logger.debug(util.format("Updated bandwidth %s-%s: saturation %s, bandwidth %s", s1.name, s2.name, saturation, bandwidth));
-                       	countdown_and_exit(enlace.id);
+                       	cb(enlace.id);
                    });
                });
-                    
             });
         }
     });

@@ -14,8 +14,6 @@ var logger    = require("./log"),
     readline  = require("readline"),
     Supernodo = require("./models/supernodo");
 
-var working = new Array();
-
 var conn = 'mongodb://localhost/troncales';
 var db = mongoose.connect(conn);
 var INTERVAL = process.env.COLLECTD_INTERVAL;
@@ -41,7 +39,7 @@ function get_testing_ip(enlace, supernodo) {
         var ip = interface.address.split("/")[0];
         if (interface.name === iface_name && network.contains(ip)) {
             return ip;
-        } 
+        }
     }
 }
 
@@ -65,7 +63,7 @@ function bandwidth_test_openwrt(enlace, s1, s2, cb) {
     if (testip) {
         c.on("ready", function() {
             c.exec(util.format("/usr/sbin/mikrotik_btest -d both -t %s %s", duration, testip), function(err, stream) {
-                logger.debug(util.format("ssh %s /usr/sbin/mikrotik_btest -d both -t %s %s", ip, duration, testip)); 
+                logger.debug(util.format("ssh %s /usr/sbin/mikrotik_btest -d both -t %s %s", ip, duration, testip));
                 var tx = 0, rx = 0;
                 stream.on("data", function(data) {
                     var data = data.toString().trim();
@@ -99,11 +97,11 @@ function bandwidth_test_openwrt(enlace, s1, s2, cb) {
         });
 
         c.connect({
-            host: ip, 
+            host: ip,
             port: 22,
             username: username,
             password: password || "-"
-        });  
+        });
     } else {
         logger.error(util.format("Link not found: %s %s", ip, enlace.id));
         cb(enlace.id);
@@ -125,7 +123,7 @@ function bandwidth_test_mikrotik(enlace, s1, s2, cb) {
         c.on("ready", function() {
             c.exec(util.format(":global ip; :global username; :global password; :global interval; :global duration; :set ip %s; :set username %s; :set password %s; :set interval %s; :set duration %s; /system script run bandwidth", testip, username2, password2, interval, duration), function(err, stream) {
                 logger.debug(util.format(":global ip; :global username; :global password; :global interval; :global duration; :set ip %s; :set username %s; :set password %s; :set interval %s; :set duration %s; /system script run bandwidth", testip, username2, password2, interval, duration));
-                if (err) { 
+                if (err) {
                         logger.debug(util.format("Error on bandwidth from %s to %s.", ip, testip));
 		        cb(enlace.id);
 	        } else {
@@ -153,11 +151,11 @@ function bandwidth_test_mikrotik(enlace, s1, s2, cb) {
         });
 
         c.connect({
-            host: ip, 
+            host: ip,
             port: 22,
             username: username,
             password: password || "-"
-        });  
+        });
     } else {
         logger.error(util.format("Link not found: %s %s", ip, enlace.id));
         cb(enlace.id);
@@ -176,30 +174,7 @@ function monitor_link(enlace, countdown_and_exit) {
             Supernodo.find({ _id: { $in: [ s1, s2 ] } }, function(err, supernodos) {
                 var s1 = supernodos[0];
                 var s2 = supernodos[1];
-
-                var time = 45000;
-                if (working.length == 0) {
-                    working[0] = new Array();
-                }
-                var found = false;
-                for (var index in working) {
-                    if (working[index].indexOf(s1.name) == -1 && working[index].indexOf(s2.name) == -1) {
-                        working[index].push(s1.name);
-                        working[index].push(s2.name);
-                        found = true;
-                        setTimeout(function() {
-                            bandwidth_test(enlace, s1, s2, countdown_and_exit);
-                        }, time*index);
-                        break;
-                    }
-                }
-                if (!found) {
-                    var next = working.length;
-                    working[next] = new Array(s1.name, s2.nam3);
-                    setTimeout(function() {
-                        bandwidth_test(enlace, s1, s2, countdown_and_exit);
-                    }, time*(next+1));
-                }
+                bandwidth_test(enlace, s1, s2, countdown_and_exit);
             });
         }
     });
@@ -229,8 +204,36 @@ Enlace.find(query).exec(function(err, enlaces) {
         }
     }
 
+    var working = new Array();
+    working[0] = new Array();
+
+    var time = 45000;
+
     enlaces.forEach(function(enlace) {
-        monitor_link(enlace, countdown_and_exit);
+
+        var found = false;
+        var s1 = enlace.supernodos[0].id;
+        var s2 = enlace.supernodos[1].id;
+        for (var index in working) {
+            if (working[index].indexOf(s1) == -1 && working[index].indexOf(s2) == -1) {
+                working[index].push(s1);
+                working[index].push(s2);
+                found = true;
+                setTimeout(function() {
+                    monitor_link(enlace, countdown_and_exit);
+                }, time*index);
+                break;
+            }
+        }
+
+        if (!found) {
+            var next = working.length;
+            working[next] = new Array(s1, s2);
+            setTimeout(function() {
+                monitor_link(enlace, countdown_and_exit);
+            }, time*(next+1));
+        }
+
     });
 });
 

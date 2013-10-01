@@ -19,8 +19,8 @@ html(ng-app="mainApp")
     script(src=urls.base + "js/controllers/enlace.js")
     script(src=urls.base + "js/controllers/user.js")
     script(src=urls.base + "js/controllers/supernodo.js")
-    script
-        angular.module('mainApp', ['google-maps', 'ui.bootstrap.modal', 'ui.select2', 'ui.bootstrap.dropdownToggle', 'ui.bootstrap.buttons' ]);       
+    script.
+        angular.module('mainApp', ['google-maps', 'ui.bootstrap.modal', 'ui.select2', 'ui.bootstrap.dropdownToggle', 'ui.bootstrap.buttons' ]);
 
   body(ng-controller=locals.controller, ng-cloak)
     div.container
@@ -36,6 +36,10 @@ html(ng-app="mainApp")
                   a.btn.btn-danger.dropdown-toggle
                     span.caret
                   ul.dropdown-menu
+                    li
+                      a(href="/user")
+                        i.icon-user
+                        |&nbspCanviar preferències
                     li
                       a(href=urls.logout) Logout
               else

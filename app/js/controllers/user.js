@@ -9,7 +9,21 @@ function UserController($scope, $location, $http) {
         $scope.pushover = response.pushover;
     });
 
+    $http.get("/api/enlace/subscription/").success(function(response) {
+        $scope.subscriptions = response;
+    });
+
     $scope.messageOk = false;
+
+    $scope.unsubscribe = function(id) {
+        $http.put("/api/enlace/" + id + "/subscription", { subscription: false }).success(function(response) {
+
+            $http.get("/api/enlace/subscription/").success(function(response) {
+                $scope.subscriptions = response;
+            });
+
+        });
+    };
 
     $scope.saveUser = function() {
         $scope.messageOk = false;
