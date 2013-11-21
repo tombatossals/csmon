@@ -117,12 +117,13 @@ function bandwidth_test_mikrotik(enlace, s1, s2, cb) {
     var password2 = s2.password;
     var interval = 5;
     var duration = 19;
+    var proto = 'tcp';
     var testip = get_testing_ip(enlace, s2);
 
     if (testip) {
         c.on("ready", function() {
-            c.exec(util.format(":global ip; :global username; :global password; :global interval; :global duration; :set ip %s; :set username %s; :set password %s; :set interval %s; :set duration %s; /system script run bandwidth", testip, username2, password2, interval, duration), function(err, stream) {
-                logger.debug(util.format(":global ip; :global username; :global password; :global interval; :global duration; :set ip %s; :set username %s; :set password %s; :set interval %s; :set duration %s; /system script run bandwidth", testip, username2, password2, interval, duration));
+            c.exec(util.format(":global ip; :global username; :global password; :global interval; :global duration; :global proto; :set ip %s; :set username %s; :set password %s; :set interval %s; :set duration %s; :set proto %s; /system script run bandwidth", testip, username2, password2, interval, duration, proto), function(err, stream) {
+                logger.debug(util.format("%s :global ip; :global username; :global password; :global interval; :global duration; global proto; :set ip %s; :set username %s; :set password %s; :set interval %s; :set duration %s; :set proto %s; /system script run bandwidth", ip, testip, username2, password2, interval, duration, proto));
                 if (err) {
                         logger.debug(util.format("Error on bandwidth from %s to %s.", ip, testip));
 		        cb(enlace.id);
